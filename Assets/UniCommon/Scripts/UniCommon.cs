@@ -13,8 +13,8 @@ namespace UniCommon {
             initialized = true;
         }
 
-        protected override void Awake() {
-            base.Awake();
+        protected override void OnAwake() {
+            base.OnAwake();
             if (initializeOnAwake)
                 Initialize();
         }

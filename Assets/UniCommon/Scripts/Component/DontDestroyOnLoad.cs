@@ -2,7 +2,7 @@ namespace UniCommon {
     public class DontDestroyOnLoad : ACommonBehaviour {
         private static DontDestroyOnLoad _instance;
 
-        private void Awake() {
+        protected override void OnAwake() {
             if (_instance == null) {
                 DontDestroyOnLoad(gameObject);
                 _instance = this;

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace UniCommon.TwoD {
+namespace UniCommon {
     [RequireComponent(typeof(Renderer))]
-    public class AutoDestroyOnNotVisible : AManagedBehaviour {
+    public class AutoDestroyOnNotVisible : ACommonBehaviour {
         private Renderer _renderer;
 
         protected override void OnStart() {

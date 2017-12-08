@@ -13,12 +13,11 @@ namespace UniCommon {
 
         protected bool isOriginal;
 
-        protected override void Awake() {
+        protected override void OnAwake() {
             if (Instance != this) {
                 Destroy(gameObject);
                 return;
             }
-            base.Awake();
             isOriginal = true;
             _instance = (T) this;
             if (Application.isPlaying && !ShouldDestroyOnLoad())

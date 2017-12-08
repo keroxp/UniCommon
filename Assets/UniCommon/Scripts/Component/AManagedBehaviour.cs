@@ -37,8 +37,12 @@ namespace UniCommon {
 
         protected sealed override void Awake() {
 #if !DEVELOPMENT_BUILD && !DEBUG
-            if (DevelopmentOnly()) gameObject.SetActive(false);
+            if (DevelopmentOnly()) {
+                gameObject.SetActive(false);
+                return;
+            }   
 #endif
+            OnAwake();
         }
 
         protected virtual void OnAwake() {
