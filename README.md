@@ -4,7 +4,7 @@
 ---
 
 Unityのユーティリティライブラリです。
-[@keroxp](https://twitter.com/keroxp)が[黒羽のアリカ](https://hexat.studio/arika)を作ったときに開発したコードを依存関係のないものを取り出して再構築しました。
+[@keroxp](https://twitter.com/keroxp)が[黒羽のアリカ](http://hexat.studio/arika)を作ったときに開発したコードから依存関係のないものを取り出して再構築しました。
 
 # How To Use
 
