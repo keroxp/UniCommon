@@ -1,3 +1,7 @@
+#if UNITY_IOS
+using System.Runtime.InteropServices;
+
+#endif
 namespace UniCommon.Crypt {
     public static class Secret {
 #if UNITY_IOS
