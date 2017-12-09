@@ -8,10 +8,6 @@ Unityのユーティリティライブラリです。
 
 # How To Use
 
-## UniRxを追加する
-
-UniRxに依存しているので、Asset StoreからUniRxをインポートしておきます。
-
 ## unity-package-syncerを使う方法
 [https://github.com/rotorz/unity3d-package-syncer](https://github.com/rotorz/unity3d-package-syncer)を使ってnpmでこのプロジェクトをインポート出来ます。
 
@@ -21,8 +17,10 @@ UniRxに依存しているので、Asset StoreからUniRxをインポートし�
 `$(npm bin)/unity3d--sync`  
 
 
-これで`Assets/Plugins/Packages/UniCommon`フォルダにライブラリがインポートされます。
+これで`Assets/Plugins/Packages/UniCommon`フォルダにライブラリがインポートされます。依存関係として`UniRx`も同ディレクトリにインポートされます。
 
 ## Zipをダウンロードする方法
 
-右上からzipをダウンロードしてプロジェクトに追加してください。（おすすめしません）
+右上からzipをダウンロードしてプロジェクトに追加してください。その場合アセットストアからUniRxをインポートする必要がありますが、2017/12/09現在、アセットストアのUniRx（5.6.0）がUnity2017.2/.Net 4.6環境に対応していないので、UniCommonもコンパイルできなくなります。
+
+** なので、おすすめしません😫 **
