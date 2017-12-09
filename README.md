@@ -11,7 +11,7 @@ Unityのユーティリティライブラリです。
 ## unity-package-syncerを使う方法
 [https://github.com/rotorz/unity3d-package-syncer](https://github.com/rotorz/unity3d-package-syncer)を使ってnpmでこのプロジェクトをインポート出来ます。
 
-`npm i unity-package-syncer --save`  
+`npm i unity3d-package-syncer --save`  
 `npm i git+https://github.com:keroxp/UniCommon.git#master --save`  
 `mkdir -p Assets/Plugins/Packages`  
 `$(npm bin)/unity3d--sync`  
