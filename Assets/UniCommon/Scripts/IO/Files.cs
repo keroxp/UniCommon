@@ -2,17 +2,17 @@
 using System.IO;
 
 namespace UniCommon {
-    public static class FileManager {
+    public static class Files {
         public static string UniqueTempFilePath(string dir) {
-            return TempPath(dir + "/" + DateTime.Now.ToBinary().ToString());
+            return TempPath(dir + "/" + DateTime.Now.ToBinary());
         }
 
         public static void TryReplace(string src, string dest) {
-            var backup = TempPath(dest);
+            var tmp = TempPath(dest);
             try {
                 if (File.Exists(dest)) {
                     // destがあればswap
-                    File.Move(dest, backup);
+                    File.Move(dest, tmp);
                     File.Move(src, dest);
                     File.Delete(src);
                 } else {
@@ -20,11 +20,11 @@ namespace UniCommon {
                     File.Move(src, dest);
                 }
             } catch (Exception e) {
-                Debugs.Error("FileManager]",
+                Debugs.Error("FileManager",
                     string.Format("failed to swap files: #{0}, #{1}, #{2}", src, dest, e.Message));
                 throw;
             } finally {
-                File.Delete(backup);
+                File.Delete(tmp);
             }
         }
 
@@ -86,12 +86,16 @@ namespace UniCommon {
             return false;
         }
 
+
         public static bool Delete(string path) {
             try {
-                File.Delete(path);
+                // 削除済みファイル名に変更
+                TryReplace(path, DeletedPath(path));
+                // そっちを消す
+                File.Delete(DeletedPath(path));
                 return true;
             } catch (Exception e) {
-                Debugs.Error("FileManager", "failed delete file: " + path + "," + e.Message);
+                Debugs.Error("Files", "failed delete file: " + path + "," + e.Message);
                 return false;
             }
         }
@@ -102,6 +106,10 @@ namespace UniCommon {
 
         private static string TempPath(string path) {
             return path + ".tmp";
+        }
+
+        private static string DeletedPath(string path) {
+            return path + ".deleted";
         }
     }
 }

@@ -4,15 +4,15 @@ using NUnit.Framework;
 
 namespace UniCommon {
     [TestFixture]
-    public class FileManagerTest {
+    public class FilesTest {
         string path = "Temp/studio.hexat.test.tmp";
 
         [Test]
         public void TryWrite_ShoulWriteDataToFile() {
             var data = "Ten Times Tiner Than They Think";
-            FileManager.TryWrite(path, Encoding.UTF8.GetBytes(data));
+            Files.TryWrite(path, Encoding.UTF8.GetBytes(data));
             Assert.True(File.Exists(path));
-            var bytes = FileManager.TryRead(path);
+            var bytes = Files.TryRead(path);
             var read = Encoding.UTF8.GetString(bytes);
             Assert.AreEqual(data, read);
         }
@@ -21,20 +21,20 @@ namespace UniCommon {
         public void TryReadBackup_ShoulReadBackupFile() {
             var data = "Ten Times Tiner Than They Think";
             var data2 = data + " ver2";
-            FileManager.TryWrite(path, Encoding.UTF8.GetBytes(data));
-            FileManager.TryWrite(path, Encoding.UTF8.GetBytes(data2));
-            Assert.True(FileManager.HasBackup(path));
-            Assert.AreEqual(data, Encoding.UTF8.GetString(FileManager.TryReadBackup(path)));
-            Assert.AreEqual(data2, Encoding.UTF8.GetString(FileManager.TryRead(path)));
+            Files.TryWrite(path, Encoding.UTF8.GetBytes(data));
+            Files.TryWrite(path, Encoding.UTF8.GetBytes(data2));
+            Assert.True(Files.HasBackup(path));
+            Assert.AreEqual(data, Encoding.UTF8.GetString(Files.TryReadBackup(path)));
+            Assert.AreEqual(data2, Encoding.UTF8.GetString(Files.TryRead(path)));
         }
 
         [Test]
         public void TryWrite_ShouldRewriteDataIfFilExist() {
             var data = "hoge";
-            FileManager.TryWrite(path, Encoding.ASCII.GetBytes(data));
+            Files.TryWrite(path, Encoding.ASCII.GetBytes(data));
             var data2 = "fuga";
-            FileManager.TryWrite(path, Encoding.ASCII.GetBytes(data2));
-            var read = FileManager.TryRead(path);
+            Files.TryWrite(path, Encoding.ASCII.GetBytes(data2));
+            var read = Files.TryRead(path);
             Assert.AreEqual(data2, Encoding.ASCII.GetString(read));
         }
 
