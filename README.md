@@ -6,7 +6,7 @@
 Unityのユーティリティライブラリです。
 [@keroxp](https://twitter.com/keroxp)が[黒羽のアリカ](http://hexat.studio/arika)を作ったときに開発したコードから依存関係のないものを取り出して再構築しました。
 
-# How To Use
+# Install
 
 ## npm/unity-package-syncerを使う方法
 
@@ -20,6 +20,17 @@ npmからインストールできます。
 `$(npm bin)/unity3d--sync`  
 
 これで`Assets/Plugins/Packages/UniCommon`フォルダにライブラリがインポートされます。依存関係として`UniRx`も同ディレクトリにインポートされます。
+
+# Usage
+ランタイムでは、以下のコードをどこかで実行するだけで準備は完了です。
+```
+using UniCommon;
+public class YouApp : MonoBehaviour {
+    void Awake() {
+      UniCommon.Initialize();
+    }
+}
+```
 
 # Contributing
 
