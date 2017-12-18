@@ -31,25 +31,27 @@ namespace UniCommon {
         public static void TryWrite(string path, byte[] data, FileMode mode = FileMode.OpenOrCreate) {
             var lck = Locks.Get(path);
             lock (lck) {
-                var _path = path;
-                var exists = File.Exists(path);
-                if (exists) {
-                    // ファイルが存在する場合は一度書き込みをtmpファイルへとする
-                    _path = TempPath(path);
-                }
-                using (lck) {
+                try {
+                    var _path = path;
+                    var exists = File.Exists(path);
+                    if (exists) {
+                        // ファイルが存在する場合は一度書き込みをtmpファイルへとする
+                        _path = TempPath(path);
+                    }
                     using (var fileStream = new FileStream(_path, mode)) {
                         using (var writer = new BinaryWriter(fileStream)) {
                             writer.Write(data);
                             writer.Flush();
                         }
                     }
-                }
-                if (exists) {
-                    // 1. 既存のファイルを.backupに変える
-                    TryReplace(path, BackupPath(path));
-                    // 2. 保存した.tmpファイルを真ファイルに変える
-                    TryReplace(_path, path);
+                    if (exists) {
+                        // 1. 既存のファイルを.backupに変える
+                        TryReplace(path, BackupPath(path));
+                        // 2. 保存した.tmpファイルを真ファイルに変える
+                        TryReplace(_path, path);
+                    }
+                } finally {
+                    lck.Dispose();
                 }
             }
         }
@@ -57,8 +59,8 @@ namespace UniCommon {
         public static byte[] TryRead(string path) {
             var lck = Locks.Get(path);
             lock (lck) {
-                using (lck) {
-                    using (var fileStream = new FileStream(path, FileMode.Open)) {
+                try {
+                    using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
                         var length = (int) fileStream.Length;
                         var ret = new byte[length];
                         var len = 0;
@@ -69,6 +71,8 @@ namespace UniCommon {
                         }
                         return ret;
                     }
+                } finally {
+                    lck.Dispose();
                 }
             }
         }
@@ -88,15 +92,20 @@ namespace UniCommon {
 
 
         public static bool Delete(string path) {
-            try {
-                // 削除済みファイル名に変更
-                TryReplace(path, DeletedPath(path));
-                // そっちを消す
-                File.Delete(DeletedPath(path));
-                return true;
-            } catch (Exception e) {
-                Debugs.Error("Files", "failed delete file: " + path + "," + e.Message);
-                return false;
+            var lck = Locks.Get(path);
+            lock (lck) {
+                try {
+                    // 削除済みファイル名に変更
+                    TryReplace(path, DeletedPath(path));
+                    // そっちを消す
+                    File.Delete(DeletedPath(path));
+                    return true;
+                } catch (Exception e) {
+                    Debugs.Error("Files", "failed delete file: " + path + "," + e.Message);
+                    return false;
+                } finally {
+                    lck.Dispose();
+                }
             }
         }
 

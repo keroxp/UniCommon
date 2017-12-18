@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace UniCommon {
@@ -23,10 +24,10 @@ namespace UniCommon {
             return new TaggedLogger(tag, formatter, logger);
         }
 
-        public static ILogger AsFileLogger(this ILogger self, string path, TimeSpan flushInterval) {
-            var fileLogger = new FileLogger(path, flushInterval);
-            self.logHandler = new ComposedLogHandler(self.logHandler, fileLogger);
-            return self;
+        public static IStreamLogger<FileStream> NewFileLogger(string tag, string path, TimeSpan flushInterval,
+            ILogFormatter formatter = null, bool writeNewLine = true, FileMode fileMode = FileMode.OpenOrCreate) {
+            var fileLogger = new FileLogHandler(path, flushInterval, writeNewLine, fileMode);
+            return new StreamLogger<FileStream>(tag, formatter ?? LogFormatters.Default, fileLogger);
         }
     }
 }
