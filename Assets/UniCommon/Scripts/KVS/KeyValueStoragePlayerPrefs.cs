@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace UniCommon {
-    public class KeyValueStoragePlayerPrefs : AKeyValueStorage {
+    internal class KeyValueStoragePlayerPrefs : AKeyValueStorage {
         private readonly string prefix;
 
         public KeyValueStoragePlayerPrefs(string prefix) : base(prefix) {

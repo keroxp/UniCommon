@@ -14,7 +14,7 @@ namespace UniCommon {
 
         private static bool _initialized;
 
-        public static void Initialize() {
+        internal static void Initialize() {
             if (_initialized) return;
             EventStream.Subscribe<AnalyticsData.AppLaunched>(OnAppLaunch);
             _initialized = true;
