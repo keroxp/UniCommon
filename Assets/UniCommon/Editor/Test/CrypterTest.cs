@@ -11,7 +11,7 @@ namespace UniCommon {
 
         [SetUp]
         public void SetUp() {
-            c = Crypter.Default(Application.version);
+            c = Crypter.Default(() => "password");
         }
 
         [Test]
@@ -46,12 +46,27 @@ namespace UniCommon {
 
         [Test]
         public void Encrypt_Null() {
-            Assert.Throws<Crypter.EncryptFailedException>(() => c.TryEncrypt(null));
+            Assert.Throws<Exception>(() => c.TryEncrypt(null));
         }
 
         [Test]
         public void Decrypt_Null() {
-            Assert.Throws<Crypter.DecryptFailedException>(() => c.TryDecrypt(null));
+            Assert.Throws<Exception>(() => c.TryDecrypt(null));
+        }
+
+        [Test]
+        public void Decrypt_Different_Version() {
+            c = Crypter.Default(() => "password");
+            VersionedCrypterProvider provider = vsn => Crypter.Default(() => vsn);
+            // 違うバージョンで読み出しても復号化できる
+            var k1 = KeyValueStorage.Secure("test", "1", provider);
+            k1.Upsert("key", "value");
+            Assert.AreEqual("value", k1.GetString("key"));
+            var k2 = KeyValueStorage.Secure("test", "2", provider);
+            Assert.AreEqual("value", k2.GetString("key"));
+            // k2 -> k1
+            k2.Upsert("key2", "value2");
+            Assert.AreEqual("value2", k1.GetString("key2"));
         }
     }
 }

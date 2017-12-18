@@ -1,6 +1,6 @@
 {
   "name": "unicommon",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Common Scripts for Unity3D",
   "main": "index.js",
   "scripts": {

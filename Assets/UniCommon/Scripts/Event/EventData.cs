@@ -5,16 +5,6 @@ namespace UniCommon {
     public interface IEventData {
     }
 
-    public struct PlayerTapped : IEventData {
-        public Vector2 pos;
-    }
-
-    public struct PlayerFlicked : IEventData {
-        public Vector2 pos;
-        public Vector2 vector;
-        public float time;
-    }
-
     public struct LocalTimeScaleChanged : IEventData {
         public string key;
         public float prev;
