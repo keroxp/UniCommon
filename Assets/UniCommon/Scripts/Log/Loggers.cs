@@ -24,7 +24,7 @@ namespace UniCommon {
             return new TaggedLogger(tag, formatter, logger);
         }
 
-        public static StreamLogger<FileStream> NewFileLogger(string tag, string path, TimeSpan flushInterval,
+        public static IStreamLogger<FileStream> NewFileLogger(string tag, string path, TimeSpan flushInterval,
             ILogFormatter formatter = null, bool writeNewLine = true, FileMode fileMode = FileMode.OpenOrCreate) {
             var fileLogger = new FileLogHandler(path, flushInterval, writeNewLine, fileMode);
             return new StreamLogger<FileStream>(tag, formatter ?? LogFormatters.Default, fileLogger);

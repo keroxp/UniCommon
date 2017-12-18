@@ -4,7 +4,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UniCommon {
-    public class ComposedLogHandler : ILogHandler {
+    internal class ComposedLogHandler : ILogHandler {
         private readonly IList<ILogHandler> _handlers;
 
         public ComposedLogHandler(params ILogHandler[] handlers) {

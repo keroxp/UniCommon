@@ -3,7 +3,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UniCommon {
-    public class TaggedLogger : ILogger {
+    internal class TaggedLogger : ILogger {
         public string Tag { get; private set; }
         private readonly ILogFormatter _formatter;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UniCommon {
-    public abstract class StreamLogHandler<T> : ILogHandler, IDisposable where T : Stream {
+    internal abstract class StreamLogHandler<T> : ILogHandler, IDisposable where T : Stream {
         protected bool _isDirty;
         protected IDisposable _subscription;
         protected ILogger _logger;

@@ -25,12 +25,10 @@ namespace UniCommon {
 
     internal class DefaultFormatter : ILogFormatter {
         private BehaviorSubject<int> frameCountSubject;
-        private IDisposable subscription;
-        private int frameCount;
 
         public DefaultFormatter() {
             frameCountSubject = new BehaviorSubject<int>(0);
-            subscription = Observable.EveryUpdate()
+            Observable.EveryUpdate()
                 .ObserveOnMainThread()
                 .Select(_ => Time.frameCount)
                 .Subscribe(frameCountSubject.OnNext);

@@ -3,10 +3,16 @@ using System.IO;
 using UnityEngine;
 
 namespace UniCommon {
-    public sealed class StreamLogger<T> : TaggedLogger, IDisposable where T : Stream {
+    public interface IStreamLogger<T> : ILogger, IDisposable where T : Stream {
+        void Flush(bool sync);
+        bool AutoFlush { get; set; }
+    }
+
+    internal sealed class StreamLogger<T> : TaggedLogger, IStreamLogger<T> where T : Stream {
         private readonly StreamLogHandler<T> _streamLogHandler;
 
-        public StreamLogger(string tag, ILogFormatter formatter, StreamLogHandler<T> handler) : base(tag, formatter,
+        public StreamLogger(string tag, ILogFormatter formatter, StreamLogHandler<T> handler) : base(tag,
+            formatter,
             handler) {
             _streamLogHandler = handler;
         }
