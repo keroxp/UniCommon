@@ -12,17 +12,20 @@ namespace UniCommon {
         void Delete(string key);
     }
 
-    public class KeyValueStorage {
+    public static class KeyValueStorage {
         public static readonly IKeyValueStorage DefaultStore = new KeyValueStoragePlayerPrefs("Default");
 
         public static IKeyValueStorage Prefixed(string prefix) {
             return new KeyValueStoragePlayerPrefs(prefix);
         }
 
-        public static IKeyValueStorage Secure(string prefix, string version, ICrypter crypter,
+        public static IKeyValueStorage Secure(
+            string prefix,
+            string version,
+            VersionedCrypterProvider crypterProvider,
             IKeyValueStorage kvs = null) {
             if (kvs == null) kvs = Prefixed(prefix);
-            return new KeyValueStorageSecure(prefix, version, crypter, kvs);
+            return new KeyValueStorageSecure(prefix, version, crypterProvider, kvs);
         }
     }
 }

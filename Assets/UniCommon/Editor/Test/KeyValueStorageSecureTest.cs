@@ -9,7 +9,8 @@ namespace UniCommon {
 
         [SetUp]
         public void SetUp() {
-            kvs = KeyValueStorage.Secure("Test", Application.version, Crypter.Default(Application.version));
+            kvs = KeyValueStorage.Secure("Test",
+                Application.version, version => Crypter.Default(() => "password"));
         }
 
         [TearDown]

@@ -2,14 +2,23 @@ using System;
 using System.Text;
 
 namespace UniCommon {
+    public delegate ICrypter VersionedCrypterProvider(string version);
+
     public sealed class KeyValueStorageSecure : ADelegatedKeyValueStorage {
-        private readonly ICrypter _encrypter;
+        private readonly VersionedCrypterProvider _crypterProvider;
         private readonly string _version;
 
-        public KeyValueStorageSecure(string prefix, string version, ICrypter crypter, IKeyValueStorage kvs) :
-            base(prefix, kvs) {
-            _encrypter = crypter;
+        public KeyValueStorageSecure(
+            string prefix,
+            string version,
+            VersionedCrypterProvider crypterProvider,
+            IKeyValueStorage kvs) : base(prefix, kvs) {
+            _crypterProvider = crypterProvider;
             _version = version;
+        }
+
+        private ICrypter CurrentCrypter() {
+            return _crypterProvider(_version);
         }
 
         protected override string Key(string key) {
@@ -22,11 +31,11 @@ namespace UniCommon {
         }
 
         public override void Upsert(string key, int value) {
-            _Upsert(key, _encrypter.TryEncrypt(BitConverter.GetBytes(value)));
+            _Upsert(key, CurrentCrypter().TryEncrypt(BitConverter.GetBytes(value)));
         }
 
         public override void Upsert(string key, float value) {
-            _Upsert(key, _encrypter.TryEncrypt(BitConverter.GetBytes(value)));
+            _Upsert(key, CurrentCrypter().TryEncrypt(BitConverter.GetBytes(value)));
         }
 
         public override void Upsert(string key, bool value) {
@@ -34,7 +43,7 @@ namespace UniCommon {
         }
 
         public override void Upsert(string key, string value) {
-            _Upsert(key, _encrypter.TryEncrypt(Encoding.UTF8.GetBytes(value)));
+            _Upsert(key, CurrentCrypter().TryEncrypt(Encoding.UTF8.GetBytes(value)));
         }
 
         private byte[] GetBytes(string key) {
@@ -42,7 +51,7 @@ namespace UniCommon {
             var base64 = base.GetString(key);
             var bytes = Convert.FromBase64String(base64);
             var vsn = Versioned.TryUnwrap(bytes);
-            return Crypter.Default(vsn.Version).TryDecrypt(vsn.Data);
+            return _crypterProvider(vsn.Version).TryDecrypt(vsn.Data);
         }
 
         public override string GetString(string key, string defaultValue = "") {
