@@ -1,5 +1,5 @@
 # UniCommon
-ゆにこもん
+[![npm version](https://badge.fury.io/js/unicommon.svg)](https://badge.fury.io/js/unicommon)  
 
 ---
 
@@ -8,19 +8,19 @@ Unityのユーティリティライブラリです。
 
 # How To Use
 
-## unity-package-syncerを使う方法
-[https://github.com/rotorz/unity3d-package-syncer](https://github.com/rotorz/unity3d-package-syncer)を使ってnpmでこのプロジェクトをインポート出来ます。
+## npm/unity-package-syncerを使う方法
 
-`npm i unity3d-package-syncer --save`  
-`npm i git+https://github.com:keroxp/UniCommon.git#master --save`  
+npmからインストールできます。  
+
+`npm i unicommon --save`  
+
+インストール後、[unity3d-package-syncer](https://github.com/rotorz/unity3d-package-syncer)を使ってnpmでこのプロジェクトをインポートします。  
+
 `mkdir -p Assets/Plugins/Packages`  
 `$(npm bin)/unity3d--sync`  
 
-
 これで`Assets/Plugins/Packages/UniCommon`フォルダにライブラリがインポートされます。依存関係として`UniRx`も同ディレクトリにインポートされます。
 
-## Zipをダウンロードする方法
+# Contributing
 
-右上からzipをダウンロードしてプロジェクトに追加してください。その場合アセットストアからUniRxをインポートする必要がありますが、2017/12/09現在、アセットストアのUniRx（5.6.0）がUnity2017.2/.Net 4.6環境に対応していないので、UniCommonもコンパイルできなくなります。
-
-** なので、おすすめしません😫 **
+バグ報告、修正依頼、その他便利機能などありましたらイシュー登録か、プルリクエストをください。コード規約などは特に設けていません。プルリクエストで修正します。
