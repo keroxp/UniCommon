@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UniRx;
 using UnityEngine;
 
 namespace UniCommon {
@@ -10,8 +11,11 @@ namespace UniCommon {
     }
 
     public static class LogFormatters {
-        public static readonly Regex DateFormatRegex = new Regex("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}");
-        public static readonly string DateFormat = "yyyy-MM-ddThh:mm:ss.fffzzz";
+        public static readonly Regex DateFormatRegex =
+            new Regex(
+                "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+\\d{2}:\\d{2} \\d{3}ms/\\d+?F <[AEWeL]> \\[.+?\\]: .*?$");
+
+        public static readonly string DateFormat = "yyyy-MM-ddThh:mm:sszzz";
         public static readonly ILogFormatter Default = new DefaultFormatter();
 
         public static string Format(string log) {
@@ -20,7 +24,17 @@ namespace UniCommon {
     }
 
     internal class DefaultFormatter : ILogFormatter {
-        private static readonly string FormatStr = "{0} <{1}> {2}";
+        private BehaviorSubject<int> frameCountSubject;
+        private IDisposable subscription;
+        private int frameCount;
+
+        public DefaultFormatter() {
+            frameCountSubject = new BehaviorSubject<int>(0);
+            subscription = Observable.EveryUpdate()
+                .ObserveOnMainThread()
+                .Select(_ => Time.frameCount)
+                .Subscribe(frameCountSubject.OnNext);
+        }
 
         private static readonly Dictionary<LogType, string> LogTypeId = new Dictionary<LogType, string> {
             {LogType.Assert, "A"},
@@ -31,8 +45,11 @@ namespace UniCommon {
         };
 
         public string Format(LogType logType, object log) {
-            // 2017-06-01 20:59:53.843517+0900 <L> [Tag]: Message
-            return string.Format(FormatStr, DateTime.Now.ToString(LogFormatters.DateFormat), LogTypeId[logType], log);
+            var now = DateTime.Now;
+            var date = now.ToString(LogFormatters.DateFormat);
+            var msAndFrame = string.Format("{0:fff}ms/{1}F", now, frameCountSubject.Value);
+            // 2017-06-01 20:59:53+09:00 230ms/433F <L> [Tag]: Message       
+            return string.Format("{0} {1} <{2}> {3}", date, msAndFrame, LogTypeId[logType], log);
         }
 
         public string FormatException(Exception exception) {

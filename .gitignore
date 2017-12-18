@@ -42,6 +42,7 @@ sysinfo.txt
 
 # .meta in Scripts
 /Assets/**/Scripts/**/*.meta
+/Assets/**/Test/**/*.meta
 /Assets/Plugins*
 
 # node_modules

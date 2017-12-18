@@ -12,7 +12,7 @@ namespace UniCommon {
     }
 
     public abstract class AManagedBehaviour : AManagedBehaviourInternal {
-        private Vector3 prevpos;
+        protected Vector3 prevpos;
 
         public Vector3 deltaPosition {
             get { return transform.position - prevpos; }
