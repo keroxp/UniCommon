@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace UniCommon {
-    public abstract class AKeyValueStorage : IKeyValueStorage {
+    internal abstract class AKeyValueStorage : IKeyValueStorage {
         private readonly string prefix;
 
         protected AKeyValueStorage(string prefix) {
@@ -24,7 +24,7 @@ namespace UniCommon {
         public abstract void Delete(string key);
     }
 
-    public abstract class ADelegatedKeyValueStorage : AKeyValueStorage {
+    internal abstract class ADelegatedKeyValueStorage : AKeyValueStorage {
         private readonly IKeyValueStorage delegator;
 
         protected ADelegatedKeyValueStorage(string prefix, IKeyValueStorage delegator) : base(prefix) {

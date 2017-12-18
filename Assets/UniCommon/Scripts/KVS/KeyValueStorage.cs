@@ -16,7 +16,7 @@ namespace UniCommon {
         public static readonly IKeyValueStorage DefaultStore = new KeyValueStoragePlayerPrefs("Default");
 
         public static IKeyValueStorage Prefixed(string prefix) {
-            return new KeyValueStoragePlayerPrefs(prefix);
+            return new KeyValueStoragePlayerPrefs("UniCommon." + prefix);
         }
 
         public static IKeyValueStorage Secure(

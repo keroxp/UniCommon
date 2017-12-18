@@ -4,7 +4,7 @@ using System.Text;
 namespace UniCommon {
     public delegate ICrypter VersionedCrypterProvider(string version);
 
-    public sealed class KeyValueStorageSecure : ADelegatedKeyValueStorage {
+    internal sealed class KeyValueStorageSecure : ADelegatedKeyValueStorage {
         private readonly VersionedCrypterProvider _crypterProvider;
         private readonly string _version;
 

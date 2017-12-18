@@ -29,13 +29,14 @@ namespace UniCommon {
         }
     }
 
-    public class Analytics {
+    internal class Analytics {
         private static readonly IDictionary<string, object> _dictBuffer = new Dictionary<string, object>();
         private static bool _initialized;
 
         public static void Initialize() {
             if (_initialized) return;
-            EventStream.All.Where(ev => ev is IAnalyticsEventData).Select(ev => ev as IAnalyticsEventData)
+            EventStream.All.Where(ev => ev is IAnalyticsEventData)
+                .Select(ev => ev as IAnalyticsEventData)
                 .Subscribe(ev => CustomEvent(ev.GetType().Name, ev));
             _initialized = true;
         }
