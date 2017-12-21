@@ -26,6 +26,10 @@ namespace UniCommon {
             get { return _value ^ _seed; }
             set { _value = value ^ _seed; }
         }
+
+        public static implicit operator long(SecureLong val) {
+            return val.Value;
+        }
     }
 
     [Serializable]
@@ -48,6 +52,10 @@ namespace UniCommon {
             this.seed = seed;
             _value = encodedValue;
         }
+
+        public static implicit operator int(SecureInt val) {
+            return val.Value;
+        }
     }
 
     [Serializable]
@@ -69,6 +77,14 @@ namespace UniCommon {
         public uint Value {
             get { return _value ^ seed; }
             set { _value = value ^ seed; }
+        }
+
+        public static implicit operator uint(SecureUInt val) {
+            return val.Value;
+        }
+
+        public static implicit operator int(SecureUInt val) {
+            return (int) val.Value;
         }
     }
 
@@ -109,6 +125,10 @@ namespace UniCommon {
             arr[1] ^= seed;
             arr[2] ^= seed;
             arr[3] ^= seed;
+        }
+
+        public static implicit operator float(SecureFloat val) {
+            return val.Value;
         }
     }
 }
