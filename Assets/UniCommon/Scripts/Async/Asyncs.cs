@@ -10,6 +10,15 @@ namespace UniCommon {
             });
         }
 
+        public static void Execute(Action action, Action callback, bool receiveOnMainThread = true) {
+            var ob = Execute(action);
+            if (receiveOnMainThread) {
+                ob.SubscribeOnMainThread().Subscribe(_ => callback());
+            } else {
+                ob.Subscribe(_ => callback());
+            }
+        }
+
         public static UniRx.IObservable<T> Execute<T>(Func<T> task) {
             return Observable.Create<T>(observer => {
                     try {
@@ -22,6 +31,15 @@ namespace UniCommon {
                     return null;
                 })
                 .SubscribeOn(Scheduler.ThreadPool);
+        }
+
+        public static void Execute<T>(Func<T> task, Action<T> callback, bool receiveOnMainThread = true) {
+            var ob = Execute(task);
+            if (receiveOnMainThread) {
+                ob.SubscribeOnMainThread().Subscribe(callback);
+            } else {
+                ob.Subscribe(callback);
+            }
         }
     }
 }
