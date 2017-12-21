@@ -14,6 +14,7 @@ namespace UniCommon {
             Assert.True(Mathf.Approximately(v.Value, 1.22f));
             v.Value = -0.911f;
             Assert.True(Mathf.Approximately(v.Value, -0.911f));
+            Assert.AreEqual(v.Value, (float) v);
         }
 
         [Test]
@@ -26,6 +27,7 @@ namespace UniCommon {
             Assert.True(v.Value == 12);
             v.Value -= 1000;
             Assert.True(v.Value == -988);
+            Assert.AreEqual(v.Value, (int) v);
         }
 
         [Test]
@@ -38,6 +40,8 @@ namespace UniCommon {
             Assert.True(v.Value == 12);
             v.Value -= 1000u;
             Assert.AreEqual(uint.MaxValue - 987, v.Value);
+            Assert.AreEqual(v.Value, (uint) v);
+            Assert.AreEqual((int) v.Value, (int) v);
         }
     }
 }
