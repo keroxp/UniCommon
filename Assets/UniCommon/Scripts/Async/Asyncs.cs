@@ -3,7 +3,7 @@ using UniRx;
 
 namespace UniCommon {
     public static class Asyncs {
-        public static UniRx.IObservable<bool> Execute(Action action) {
+        public static IObservable<bool> Execute(Action action) {
             return Execute(() => {
                 action();
                 return true;
@@ -19,7 +19,7 @@ namespace UniCommon {
             }
         }
 
-        public static UniRx.IObservable<T> Execute<T>(Func<T> task) {
+        public static IObservable<T> Execute<T>(Func<T> task) {
             return Observable.Create<T>(observer => {
                     try {
                         observer.OnNext(task());
